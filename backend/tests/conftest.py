@@ -1,6 +1,7 @@
 """Pytest configuration and fixtures."""
 
 import pytest
+import pytest_asyncio
 from typing import AsyncGenerator
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
@@ -28,7 +29,7 @@ async def override_get_db() -> AsyncGenerator[AsyncSession, None]:
             await session.close()
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def db_session() -> AsyncGenerator[AsyncSession, None]:
     """Create a test database session."""
     async with engine.begin() as conn:
@@ -41,7 +42,7 @@ async def db_session() -> AsyncGenerator[AsyncSession, None]:
         await conn.run_sync(Base.metadata.drop_all)
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def client() -> AsyncGenerator[AsyncClient, None]:
     """Create a test client."""
     app.dependency_overrides[get_db] = override_get_db

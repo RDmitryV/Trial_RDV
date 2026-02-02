@@ -1,6 +1,7 @@
 """Tests for research API endpoints."""
 
 import pytest
+import pytest_asyncio
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from unittest.mock import AsyncMock, patch
@@ -10,12 +11,11 @@ from app.models.research import Research, ResearchStatus, ResearchType
 from app.core.security import get_password_hash
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def test_user(db_session: AsyncSession) -> User:
     """Create a test user."""
     user = User(
         email="test@example.com",
-        username="testuser",
         hashed_password=get_password_hash("testpassword"),
         is_active=True,
     )
@@ -25,7 +25,7 @@ async def test_user(db_session: AsyncSession) -> User:
     return user
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def test_research(db_session: AsyncSession, test_user: User) -> Research:
     """Create a test research."""
     research = Research(
@@ -58,7 +58,6 @@ async def test_create_research_success(client: AsyncClient, auth_headers: dict):
         mock_user = User(
             id="test-user-id",
             email="test@example.com",
-            username="testuser",
             is_active=True,
         )
         mock_auth.return_value = mock_user
@@ -230,7 +229,6 @@ async def test_create_research_validation_error(client: AsyncClient, auth_header
         mock_user = User(
             id="test-user-id",
             email="test@example.com",
-            username="testuser",
             is_active=True,
         )
         mock_auth.return_value = mock_user

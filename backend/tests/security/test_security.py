@@ -1,6 +1,7 @@
 """Security tests for the application."""
 
 import pytest
+import pytest_asyncio
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from unittest.mock import patch
@@ -9,12 +10,11 @@ from app.models.user import User
 from app.core.security import get_password_hash
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def test_user_security(db_session: AsyncSession) -> User:
     """Create a test user for security tests."""
     user = User(
         email="security@example.com",
-        username="securitytester",
         hashed_password=get_password_hash("securepassword123"),
         is_active=True,
     )
