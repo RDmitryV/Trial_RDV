@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.core.config import settings
-from app.api.v1 import auth, research, analysis, verification
+from app.api.v1 import auth, research, analysis, verification, reports
 
 
 @asynccontextmanager
@@ -42,6 +42,7 @@ app.include_router(auth.router, prefix=f"{settings.api_v1_prefix}/auth", tags=["
 app.include_router(research.router, prefix=f"{settings.api_v1_prefix}/research", tags=["Research"])
 app.include_router(analysis.router, prefix=f"{settings.api_v1_prefix}/analysis", tags=["Analysis"])
 app.include_router(verification.router, prefix=settings.api_v1_prefix, tags=["Verification"])
+app.include_router(reports.router, prefix=f"{settings.api_v1_prefix}/reports", tags=["Reports"])
 
 
 @app.get("/")
