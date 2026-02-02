@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.core.config import settings
-from app.api.v1 import auth, research, analysis, verification, reports
+from app.api.v1 import auth, research, analysis, verification, reports, chat
 
 
 @asynccontextmanager
@@ -43,6 +43,7 @@ app.include_router(research.router, prefix=f"{settings.api_v1_prefix}/research",
 app.include_router(analysis.router, prefix=f"{settings.api_v1_prefix}/analysis", tags=["Analysis"])
 app.include_router(verification.router, prefix=settings.api_v1_prefix, tags=["Verification"])
 app.include_router(reports.router, prefix=f"{settings.api_v1_prefix}/reports", tags=["Reports"])
+app.include_router(chat.router, prefix=f"{settings.api_v1_prefix}/chat", tags=["AI Chat"])
 
 
 @app.get("/")

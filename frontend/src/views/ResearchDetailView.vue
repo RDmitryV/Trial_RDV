@@ -14,6 +14,7 @@ import TabPanel from 'primevue/tabpanel'
 import Accordion from 'primevue/accordion'
 import AccordionTab from 'primevue/accordiontab'
 import { ResearchStatus, AnalysisType } from '@/types'
+import AIChatPanel from '@/components/chat/AIChatPanel.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -211,6 +212,13 @@ const formatDate = (dateString: string) => {
                 </AccordionTab>
               </Accordion>
             </div>
+          </TabPanel>
+
+          <TabPanel header="AI-ассистент">
+            <AIChatPanel
+              :research-id="researchId"
+              :enable-streaming="true"
+            />
           </TabPanel>
 
           <TabPanel header="Экспорт">
