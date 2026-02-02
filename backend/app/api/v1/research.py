@@ -12,6 +12,8 @@ from app.api.deps import get_current_active_user
 from app.models.user import User
 from app.models.research import Research, ResearchStatus, ResearchType
 from app.services.llm_service import LLMService
+from app.services.data_collection.pipeline_orchestrator import DataCollectionPipeline
+from app.core.config import settings
 
 router = APIRouter()
 
@@ -120,7 +122,7 @@ async def analyze_research(
     db: Annotated[AsyncSession, Depends(get_db)],
     llm_service: Annotated[LLMService, Depends(LLMService)],
 ):
-    """Analyze research using LLM."""
+    """Analyze research using LLM with real data collection."""
     # Get research
     result = await db.execute(
         select(Research).where(Research.id == research_id, Research.user_id == current_user.id)
@@ -138,11 +140,31 @@ async def analyze_research(
     await db.commit()
 
     try:
-        # Perform analysis using LLM
-        analysis_result = await llm_service.analyze_market(
+        # Step 1: Collect real data from multiple sources
+        pipeline = DataCollectionPipeline(
+            db=db,
+            serpapi_key=getattr(settings, 'serpapi_key', None),
+        )
+
+        # Run data collection pipeline
+        await pipeline.collect_all_data(
+            research=research,
+            enable_web_search=True,
+            enable_scraping=True,
+            enable_news=True,
+            enable_api_data=True,
+            enable_verification=True,
+        )
+
+        # Step 2: Format collected data for LLM
+        collected_data_text = await pipeline.format_data_for_llm(research)
+
+        # Step 3: Perform analysis using LLM with real data
+        analysis_result = await llm_service.analyze_market_with_data(
             product_description=research.product_description,
             industry=research.industry,
             region=research.region,
+            collected_data=collected_data_text,
         )
 
         # Update status to completed

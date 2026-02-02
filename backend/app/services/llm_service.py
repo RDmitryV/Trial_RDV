@@ -71,6 +71,64 @@ class LLMService:
         except Exception as e:
             raise Exception(f"LLM analysis failed: {str(e)}")
 
+    async def analyze_market_with_data(
+        self,
+        product_description: str,
+        industry: str,
+        region: str,
+        collected_data: str,
+    ) -> str:
+        """
+        Analyze market using real collected data.
+
+        Args:
+            product_description: Product description
+            industry: Industry sector
+            region: Region
+            collected_data: Formatted collected data from multiple sources
+
+        Returns:
+            Market analysis based on real data
+        """
+        prompt_template = ChatPromptTemplate.from_messages([
+            ("system", """Ты - профессиональный маркетинговый аналитик.
+            Твоя задача - провести анализ рынка для нового продукта на основе РЕАЛЬНЫХ данных.
+
+            ВАЖНО: Используй ТОЛЬКО предоставленные данные для анализа. Не придумывай факты.
+            Если данных недостаточно, укажи это в анализе.
+
+            Предоставь структурированный анализ, включающий:
+            1. Обзор рынка (на основе собранных данных)
+            2. Целевая аудитория (на основе рыночных трендов)
+            3. Конкуренты (на основе найденной информации о конкурентах)
+            4. Возможности и угрозы (на основе новостей и трендов)
+            5. Рекомендации (на основе проанализированных данных)
+
+            Указывай источники данных в анализе, где это уместно.
+            Ответ должен быть на русском языке, профессиональным и основанным на фактах."""),
+            ("human", """Продукт: {product_description}
+            Отрасль: {industry}
+            Регион: {region}
+
+            Собранные данные из реальных источников:
+            {collected_data}
+
+            Проведи комплексный маркетинговый анализ на основе этих данных."""),
+        ])
+
+        chain = LLMChain(llm=self.llm, prompt=prompt_template)
+
+        try:
+            result = await chain.ainvoke({
+                "product_description": product_description,
+                "industry": industry,
+                "region": region,
+                "collected_data": collected_data,
+            })
+            return result["text"]
+        except Exception as e:
+            raise Exception(f"LLM analysis with data failed: {str(e)}")
+
     async def generate_report_section(
         self,
         section_type: str,
