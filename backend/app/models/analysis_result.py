@@ -37,7 +37,7 @@ class AnalysisResult(Base):
     # Confidence and metadata
     confidence_score = Column(JSON, nullable=True)  # Confidence scores for different aspects
     data_sources_used = Column(JSON, nullable=True)  # List of source IDs used
-    metadata = Column(JSON, nullable=True)  # Additional metadata
+    extra_metadata = Column(JSON, nullable=True)  # Additional metadata
 
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

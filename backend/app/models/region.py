@@ -40,4 +40,4 @@ class Region(Base):
     # Additional data
     key_industries = Column(JSON, nullable=True)  # List of key industries
     regional_features = Column(Text, nullable=True)  # Special characteristics
-    metadata = Column(JSON, nullable=True)  # Additional structured data
+    extra_metadata = Column(JSON, nullable=True)  # Additional structured data

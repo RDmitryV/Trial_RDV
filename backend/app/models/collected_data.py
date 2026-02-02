@@ -42,7 +42,7 @@ class CollectedData(Base):
     size_bytes = Column(Integer, nullable=True)
 
     # Processing metadata
-    metadata = Column(JSON, nullable=True)  # Additional metadata as JSON
+    extra_metadata = Column(JSON, nullable=True)  # Additional metadata as JSON
     is_processed = Column(Enum("yes", "no", name="processed_flag"), default="no", nullable=False)
 
     # Timestamps

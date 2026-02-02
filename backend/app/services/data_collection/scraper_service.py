@@ -84,7 +84,7 @@ class ScraperService:
                     source_url=url,
                     collected_date=datetime.utcnow(),
                     size_bytes=len(response.content),
-                    metadata={
+                    extra_metadata={
                         "status_code": response.status_code,
                         "content_type": response.headers.get("content-type"),
                         "final_url": str(response.url),

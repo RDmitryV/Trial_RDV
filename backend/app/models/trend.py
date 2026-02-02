@@ -54,7 +54,7 @@ class Trend(Base):
     evidence = Column(JSON, nullable=True)  # Supporting evidence (sources, mentions, etc.)
 
     # Metadata
-    metadata = Column(JSON, nullable=True)
+    extra_metadata = Column(JSON, nullable=True)
 
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

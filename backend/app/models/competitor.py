@@ -43,7 +43,7 @@ class Competitor(Base):
     # Analysis data
     similarity_score = Column(Float, nullable=True)  # Similarity to our product (0-1)
     threat_level = Column(Float, nullable=True)  # Threat level (0-1)
-    metadata = Column(JSON, nullable=True)
+    extra_metadata = Column(JSON, nullable=True)
 
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

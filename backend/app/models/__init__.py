@@ -9,6 +9,14 @@ from app.models.region import Region
 from app.models.analysis_result import AnalysisResult
 from app.models.trend import Trend
 from app.models.competitor import Competitor
+from app.models.source_verification import (
+    SourceVerification,
+    TrustedSource,
+    BlockedSource,
+    DataValidation,
+    VerificationStatus,
+    ReliabilityRating,
+)
 
 __all__ = [
     "User",
@@ -20,4 +28,10 @@ __all__ = [
     "AnalysisResult",
     "Trend",
     "Competitor",
+    "SourceVerification",
+    "TrustedSource",
+    "BlockedSource",
+    "DataValidation",
+    "VerificationStatus",
+    "ReliabilityRating",
 ]
