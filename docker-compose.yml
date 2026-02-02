@@ -100,6 +100,19 @@ services:
       - celery_worker
     command: celery -A app.celery_app flower --port=5555
 
+  # Frontend (Vue 3)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: marketoluh_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+
 volumes:
   postgres_data:
   redis_data:
