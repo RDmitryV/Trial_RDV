@@ -3,10 +3,14 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useResearchStore } from '@/stores/research'
 import { useToast } from 'primevue/usetoast'
-import AppLayout from '@/components/common/AppLayout.vue'
+
 import Card from 'primevue/card'
 import Stepper from 'primevue/stepper'
-import StepperPanel from 'primevue/stepperpanel'
+import StepList from 'primevue/steplist'
+import StepPanels from 'primevue/steppanels'
+import StepItem from 'primevue/stepitem'
+import Step from 'primevue/step'
+import StepPanel from 'primevue/steppanel'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import Dropdown from 'primevue/dropdown'
@@ -71,9 +75,21 @@ const [region] = defineField('region')
 const loading = ref(false)
 
 const nextStep = async () => {
-  // Validate current step fields
-  const result = await validate()
-  if (result.valid) {
+  // Validate only current step fields
+  let fieldsToValidate: string[] = []
+
+  if (activeStep.value === 0) {
+    fieldsToValidate = ['title', 'description']
+  } else if (activeStep.value === 1) {
+    fieldsToValidate = ['product_description']
+  } else if (activeStep.value === 2) {
+    fieldsToValidate = ['industry', 'region']
+  }
+
+  const result = await validate({ mode: 'silent' })
+  const hasErrors = fieldsToValidate.some(field => errors.value[field])
+
+  if (!hasErrors) {
     activeStep.value++
   }
 }
@@ -113,14 +129,19 @@ const cancel = () => {
 </script>
 
 <template>
-  <AppLayout>
+  
     <div class="p-4">
       <Card>
         <template #title>Новое маркетинговое исследование</template>
         <template #content>
-          <Stepper :active-step="activeStep" linear>
-            <StepperPanel header="Основная информация">
-              <template #content>
+          <Stepper v-model:value="activeStep" linear>
+            <StepList>
+              <Step :value="0">Основная информация</Step>
+              <Step :value="1">Продукт/Услуга</Step>
+              <Step :value="2">Отрасль и регион</Step>
+            </StepList>
+            <StepPanels>
+              <StepPanel :value="0">
                 <div class="flex flex-column gap-4 py-4">
                   <div class="flex flex-column gap-2">
                     <label for="title">Название исследования *</label>
@@ -150,11 +171,9 @@ const cancel = () => {
                     <Button label="Далее" @click="nextStep" />
                   </div>
                 </div>
-              </template>
-            </StepperPanel>
+              </StepPanel>
 
-            <StepperPanel header="Продукт/Услуга">
-              <template #content>
+              <StepPanel :value="1">
                 <div class="flex flex-column gap-4 py-4">
                   <div class="flex flex-column gap-2">
                     <label for="product_description">Описание продукта/услуги *</label>
@@ -175,11 +194,9 @@ const cancel = () => {
                     <Button label="Далее" @click="nextStep" />
                   </div>
                 </div>
-              </template>
-            </StepperPanel>
+              </StepPanel>
 
-            <StepperPanel header="Отрасль и регион">
-              <template #content>
+              <StepPanel :value="2">
                 <div class="flex flex-column gap-4 py-4">
                   <div class="flex flex-column gap-2">
                     <label for="industry">Отрасль *</label>
@@ -214,11 +231,11 @@ const cancel = () => {
                     />
                   </div>
                 </div>
-              </template>
-            </StepperPanel>
+              </StepPanel>
+            </StepPanels>
           </Stepper>
         </template>
       </Card>
     </div>
-  </AppLayout>
+  
 </template>

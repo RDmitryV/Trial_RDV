@@ -1,0 +1,82 @@
+// Sakai styles
+@import './layout.css';
+
+// PrimeFlex utilities
+.card {
+    background: var(--surface-card);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+}
+
+.text-500 { color: var(--text-color-secondary); }
+.text-600 { color: var(--text-color-secondary); }
+.text-900 { color: var(--text-color); }
+.font-medium { font-weight: 500; }
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.text-xl { font-size: 1.25rem; }
+.text-sm { font-size: 0.875rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-0 { margin-bottom: 0; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+.p-4 { padding: 1rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+
+.flex { display: flex; }
+.flex-column { flex-direction: column; }
+.align-items-center { align-items: center; }
+.justify-content-between { justify-content: space-between; }
+.justify-content-center { justify-content: center; }
+.justify-content-end { justify-content: flex-end; }
+
+.grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem; }
+.col-12 { grid-column: span 12; }
+
+@media (min-width: 992px) {
+    .lg\:col-6 { grid-column: span 6; }
+    .lg\:block { display: block !important; }
+}
+
+@media (min-width: 1200px) {
+    .xl\:col-3 { grid-column: span 3; }
+}
+
+.hidden { display: none !important; }
+.block { display: block; }
+.border-round { border-radius: var(--border-radius); }
+
+.bg-blue-100 { background-color: rgba(96, 165, 250, 0.16); }
+.bg-orange-100 { background-color: rgba(251, 146, 60, 0.16); }
+.bg-cyan-100 { background-color: rgba(34, 211, 238, 0.16); }
+.bg-green-100 { background-color: rgba(74, 222, 128, 0.16); }
+
+.text-blue-500 { color: rgb(96, 165, 250); }
+.text-orange-500 { color: rgb(251, 146, 60); }
+.text-cyan-500 { color: rgb(34, 211, 238); }
+.text-green-500 { color: rgb(74, 222, 128); }
+
+.text-primary { color: var(--primary-color); }
+.text-center { text-align: center; }
+
+// Topbar menu visibility fix
+.layout-topbar-menu {
+    display: flex !important;
+}
+
+.layout-topbar-menu-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.layout-config-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

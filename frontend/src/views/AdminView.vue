@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import AppLayout from '@/components/common/AppLayout.vue'
+
 import Card from 'primevue/card'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
@@ -15,7 +15,7 @@ const systemStats = ref({
 </script>
 
 <template>
-  <AppLayout>
+  
     <div class="p-4">
       <Card>
         <template #title>Административная панель</template>
@@ -93,5 +93,5 @@ const systemStats = ref({
         </template>
       </Card>
     </div>
-  </AppLayout>
+  
 </template>

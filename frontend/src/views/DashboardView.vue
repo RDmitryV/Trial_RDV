@@ -2,9 +2,9 @@
 import { onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useResearchStore } from '@/stores/research'
+import { useAuthStore } from '@/stores/auth'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
-import AppLayout from '@/components/common/AppLayout.vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Button from 'primevue/button'
@@ -15,8 +15,15 @@ import { ResearchStatus } from '@/types'
 
 const router = useRouter()
 const researchStore = useResearchStore()
+const authStore = useAuthStore()
 const toast = useToast()
 const confirm = useConfirm()
+
+// Stats computed properties
+const totalResearches = computed(() => researchStore.researches.length)
+const draftCount = computed(() => researchStore.researches.filter(r => r.status === ResearchStatus.DRAFT).length)
+const inProgressCount = computed(() => researchStore.researches.filter(r => r.status === ResearchStatus.IN_PROGRESS).length)
+const completedCount = computed(() => researchStore.researches.filter(r => r.status === ResearchStatus.COMPLETED).length)
 
 onMounted(() => {
   loadResearches()
@@ -95,8 +102,67 @@ const formatDate = (dateString: string) => {
 </script>
 
 <template>
-  <AppLayout>
     <div class="p-4">
+      <!-- Statistics Widgets -->
+      <div class="grid mb-4">
+        <div class="col-12 lg:col-6 xl:col-3">
+          <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+              <div>
+                <span class="block text-500 font-medium mb-3">Всего исследований</span>
+                <div class="text-900 font-medium text-xl">{{ totalResearches }}</div>
+              </div>
+              <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-chart-bar text-blue-500 text-xl"></i>
+              </div>
+            </div>
+            <span class="text-green-500 font-medium">{{ authStore.user?.full_name || 'Пользователь' }}</span>
+          </div>
+        </div>
+        <div class="col-12 lg:col-6 xl:col-3">
+          <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+              <div>
+                <span class="block text-500 font-medium mb-3">Черновики</span>
+                <div class="text-900 font-medium text-xl">{{ draftCount }}</div>
+              </div>
+              <div class="flex align-items-center justify-content-center bg-orange-100 border-round" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-file-edit text-orange-500 text-xl"></i>
+              </div>
+            </div>
+            <span class="text-500">Ожидают запуска</span>
+          </div>
+        </div>
+        <div class="col-12 lg:col-6 xl:col-3">
+          <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+              <div>
+                <span class="block text-500 font-medium mb-3">В процессе</span>
+                <div class="text-900 font-medium text-xl">{{ inProgressCount }}</div>
+              </div>
+              <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-spin pi-spinner text-cyan-500 text-xl"></i>
+              </div>
+            </div>
+            <span class="text-500">Анализ данных</span>
+          </div>
+        </div>
+        <div class="col-12 lg:col-6 xl:col-3">
+          <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+              <div>
+                <span class="block text-500 font-medium mb-3">Завершено</span>
+                <div class="text-900 font-medium text-xl">{{ completedCount }}</div>
+              </div>
+              <div class="flex align-items-center justify-content-center bg-green-100 border-round" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-check-circle text-green-500 text-xl"></i>
+              </div>
+            </div>
+            <span class="text-green-500 font-medium">Готово к скачиванию</span>
+          </div>
+        </div>
+      </div>
+
       <Card>
         <template #title>
           <div class="flex justify-content-between align-items-center">
@@ -176,5 +242,4 @@ const formatDate = (dateString: string) => {
         </template>
       </Card>
     </div>
-  </AppLayout>
 </template>

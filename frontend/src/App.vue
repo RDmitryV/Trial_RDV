@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import AppLayout from '@/layout/AppLayout.vue'
 import Toast from 'primevue/toast'
 import ConfirmDialog from 'primevue/confirmdialog'
 
 const authStore = useAuthStore()
+const route = useRoute()
+
+const isAuthPage = computed(() => {
+  return route.name === 'login' || route.name === 'register'
+})
 
 onMounted(() => {
   // Try to fetch current user if token exists
@@ -21,7 +28,10 @@ onMounted(() => {
   <div id="app">
     <Toast />
     <ConfirmDialog />
-    <router-view />
+    <AppLayout v-if="!isAuthPage && authStore.isAuthenticated">
+      <router-view />
+    </AppLayout>
+    <router-view v-else />
   </div>
 </template>
 

@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useResearchStore } from '@/stores/research'
 import { useAnalysisStore } from '@/stores/analysis'
 import { useToast } from 'primevue/usetoast'
-import AppLayout from '@/components/common/AppLayout.vue'
+
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import Tag from 'primevue/tag'
@@ -102,7 +102,7 @@ const formatDate = (dateString: string) => {
 </script>
 
 <template>
-  <AppLayout>
+  
     <div class="p-4">
       <div v-if="research" class="flex flex-column gap-4">
         <!-- Header -->
@@ -238,5 +238,5 @@ const formatDate = (dateString: string) => {
         <Skeleton height="20rem" />
       </div>
     </div>
-  </AppLayout>
+  
 </template>
